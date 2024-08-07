@@ -2,10 +2,12 @@ async function sendMessage() {
     const userInput = document.getElementById("user-input").value;
     if (!userInput) return;
 
-    // Adiciona a mensagem do usuário ao chat
     const chatBox = document.getElementById("chat-box");
+
+    // Adiciona a mensagem do usuário ao chat
     const userMessage = document.createElement("div");
-    userMessage.textContent = `Você: ${userInput}`;
+    userMessage.className = "user-message";
+    userMessage.textContent = userInput;
     chatBox.appendChild(userMessage);
 
     // Limpa o campo de entrada
@@ -16,7 +18,7 @@ async function sendMessage() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer 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` // Substitua YOUR_API_KEY pela sua chave de API da OpenAI
+            'Authorization': `Bearer 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` 
         },
         body: JSON.stringify({
             prompt: userInput,
@@ -26,7 +28,8 @@ async function sendMessage() {
 
     const data = await response.json();
     const botMessage = document.createElement("div");
-    botMessage.textContent = `Chatbot: ${data.choices[0].text}`;
+    botMessage.className = "bot-message";
+    botMessage.textContent = data.choices[0].text.trim();
     chatBox.appendChild(botMessage);
 
     // Rola para baixo para ver a nova mensagem
