@@ -1,97 +1,37 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #f0f0f0;
-    position: relative;
-}
+async function sendMessage() {
+    const userInput = document.getElementById("user-input").value;
+    if (!userInput) return;
 
-.logo {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 100px;
-    height: auto;
-}
+    const chatBox = document.getElementById("chat-box");
 
-#chat-container {
-    width: 100%;
-    max-width: 400px;
-    height: 600px;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    overflow: hidden;
-    background-color: #fff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
+    // Adiciona a mensagem do usuário ao chat
+    const userMessage = document.createElement("div");
+    userMessage.className = "user-message";
+    userMessage.textContent = userInput;
+    chatBox.appendChild(userMessage);
 
-header {
-    background-color: #1a3e5c; /* Azul escuro */
-    color: white;
-    padding: 10px;
-    text-align: center;
-}
+    // Limpa o campo de entrada
+    document.getElementById("user-input").value = "";
 
-#chat-box {
-    flex: 1;
-    padding: 10px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    background-color: #e5ddd5;
-}
+    // Chama a API da OpenAI
+    const response = await fetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer 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`
+        },
+        body: JSON.stringify({
+            prompt: userInput,
+            max_tokens: 150,
+        })
+    });
 
-#chat-box div {
-    margin: 5px 0;
-    padding: 10px;
-    border-radius: 10px;
-    max-width: 80%;
-}
+    const data = await response.json();
+    const botMessage = document.createElement("div");
+    botMessage.className = "bot-message";
+    botMessage.textContent = data.choices[0].text.trim();
+    chatBox.appendChild(botMessage);
 
-#chat-box .user-message {
-    align-self: flex-end;
-    background-color: #ffcc00; /* Dourado */
-    color: #000;
-}
-
-#chat-box .bot-message {
-    align-self: flex-start;
-    background-color: #fff;
-    color: #000;
-    border: 1px solid #ccc;
-}
-
-footer {
-    display: flex;
-    padding: 10px;
-    border-top: 1px solid #ccc;
-    background-color: #fff;
-}
-
-#user-input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    margin-right: 10px;
-    outline: none;
-}
-
-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 20px;
-    background-color: #1a3e5c; /* Azul escuro */
-    color: white;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #16334c; /* Um tom mais escuro de azul */
+    // Rola para baixo para ver a nova mensagem
+    chatBox.scrollTop = chatBox.scrollHeight;
 }
