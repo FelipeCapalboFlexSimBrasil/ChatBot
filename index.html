@@ -11,9 +11,11 @@
         <h1>Bem-vindo ao FlexSim Chatbot</h1>
     </header>
     <main>
-        <p>Este é um site simples hospedado no GitHub Pages.</p>
-        <button onclick="displayMessage()">Clique aqui</button>
-        <p id="message"></p>
+        <div id="chat-container">
+            <div id="chat-box"></div>
+            <input type="text" id="user-input" placeholder="Digite sua mensagem aqui">
+            <button onclick="sendMessage()">Enviar</button>
+        </div>
     </main>
     <script src="script.js"></script>
 </body>
