@@ -18,7 +18,7 @@ async function sendMessage() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer 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` 
+            'Authorization': `Bearer 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`
         },
         body: JSON.stringify({
             prompt: userInput,
