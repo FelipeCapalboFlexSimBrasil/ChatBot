@@ -13,23 +13,19 @@ async function sendMessage() {
     // Limpa o campo de entrada
     document.getElementById("user-input").value = "";
 
-    // Chama a API da OpenAI
-    const response = await fetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
+    // Chama a API da OpenAI (substitua esta parte para usar o LLaMA localmente)
+    const response = await fetch('/api/llama', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer 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`
+            'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            prompt: userInput,
-            max_tokens: 150,
-        })
+        body: JSON.stringify({ prompt: userInput })
     });
 
     const data = await response.json();
     const botMessage = document.createElement("div");
     botMessage.className = "bot-message";
-    botMessage.textContent = data.choices[0].text.trim();
+    botMessage.textContent = data.response; // Certifique-se de que o backend retorna o texto da resposta aqui
     chatBox.appendChild(botMessage);
 
     // Rola para baixo para ver a nova mensagem
